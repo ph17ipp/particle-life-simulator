@@ -1,0 +1,78 @@
+# see documentation, e.g.
+# - https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata
+# - https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+# - https://www.python.org/dev/peps/pep-0621/
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    { name = "Philipp Tran", email = "philipp.tran@study.hs-duesseldorf.de" }
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = []
+description = "Python-basierte Simulation biologisch inspirierter Partikelinteraktionen"
+license = {file = "LICENSE"}
+name = "particle_life_simulator"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.8"
+version = "0.1.0"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "isort",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+publishing = [
+    "build",
+    "twine",
+    "wheel",
+]
+
+[tool.black]
+line-length = 120
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+)/
+'''
+
+[tool.isort]
+profile = "black"
+known_first_party = "particle_life_simulator"
+src_paths = ["particle_life_simulator", "tests"]
+line_length = "120"
+
+[tool.pylint]  # If you opt to use pylint
+# Pylint configuration options
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+
+[tool.ruff.lint]
+extend-select = ["E", "I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["particle-life-simulator"]
