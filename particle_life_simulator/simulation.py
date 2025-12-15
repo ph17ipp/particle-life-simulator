@@ -1,9 +1,27 @@
-from particles import *
+from particles import Particles
 import pygame
 
 def main():
-    NUM_TYPE = 4
-    NUM_PARTICLES = 200
+    while True:
+        user_input = input("Enter number of particles: ")
+        try:
+            num_particles = int(user_input)
+        except ValueError:
+            print("Invalid input. Please enter an integer.")
+            continue
+        break
+
+    while True:
+        user_input = input("Enter number of particle types: ")
+        try:
+            num_types = int(user_input)
+        except ValueError:
+            print("Invalid input. Please enter an integer.")
+            continue
+        break
+
+    NUM_TYPE = num_types
+    NUM_PARTICLES = num_particles
 
     particles = Particles(NUM_PARTICLES, NUM_TYPE)
 
@@ -19,7 +37,7 @@ def main():
     clock = pygame.time.Clock()
     
     while running:
-        clock.tick(60)  # 60 FPS
+        clock.tick(10)  # 60 FPS
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -29,7 +47,7 @@ def main():
         screen.fill((0, 0, 0))
         
         # Update particles
-        particles.move()
+        particles.update_position()
         
         # Draw particles
         for i in range(NUM_PARTICLES):

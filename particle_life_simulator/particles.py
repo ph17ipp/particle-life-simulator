@@ -1,6 +1,4 @@
-import random
 import numpy as np
-from simulation import *
 
 class Particles:
     def __init__(self, n_particles: int, n_type: int):
@@ -9,12 +7,7 @@ class Particles:
         self.position = np.random.rand(n_particles, 2) * [600, 600] 
         self.speed = np.zeros((n_particles, 2))
     
-    def get_positions(self):
-        return print(self.position)
-
-    def get_speed(self):
-        return print(f"Current speed: {self.speed}")
-    
-    def move(self):
+    def update_position(self):
         self.position = np.random.normal(self.position, 5)
+        self.position = self.position % 600
         return self.position
