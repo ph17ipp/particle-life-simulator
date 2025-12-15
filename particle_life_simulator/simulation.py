@@ -1,27 +1,55 @@
 from particles import *
+import pygame
 
 def main():
+    NUM_TYPE = 4
+    NUM_PARTICLES = 200
 
-    number = int(input("How many particles?: "))
-    particles = Particles(n_particles = number, n_type = 2)
-    particles.get_positions()
+    particles = Particles(NUM_PARTICLES, NUM_TYPE)
 
-    while True:
-        question = input("What do you want? move, show_speed or exit? ")
+    # Initialize Pygame
+    pygame.init()
 
-        if question == "move":
-            question = int(input("How many steps? "))
-            for step in range(question):
-                print(f"Step: {step + 1}")
-                particles.move()
-                print("----------------------------")
+    # Set up the game window
+    screen = pygame.display.set_mode((600, 600))
+    pygame.display.set_caption("Particle Life Simulator")
 
-        if question == "show_speed":
-            particles.get_speed()
+    # Game loop
+    running = True
+    clock = pygame.time.Clock()
+    
+    while running:
+        clock.tick(60)  # 60 FPS
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-        if question == "exit":
-            print("Thanks for using our particle simulator.")
-            exit()
+        # Clear screen
+        screen.fill((0, 0, 0))
+        
+        # Update particles
+        particles.move()
+        
+        # Draw particles
+        for i in range(NUM_PARTICLES):
+            color = pygame.Color(0)
+            if particles.n_type[i] == 0:
+                color = pygame.Color(255, 0, 0)  # Red
+            elif particles.n_type[i] == 1:
+                color = pygame.Color(0, 255, 0)  # Green
+            elif particles.n_type[i] == 2:
+                color = pygame.Color(0, 0, 255)  # Blue
+            elif particles.n_type[i] == 3:
+                color = pygame.Color(255, 255, 0)  # Yellow
+            pygame.draw.circle(screen, color, particles.position[i].astype(int), 3)
+        
+        # Update display
+        pygame.display.flip()
+        
+    # Quit Pygame
+    pygame.quit()
+
 
 if __name__ == "__main__":
     main()
