@@ -19,17 +19,20 @@ def main():
             print("Invalid input. Please enter an integer.")
             continue
         break
-
+    
+    # Config
     NUM_TYPE = num_types
     NUM_PARTICLES = num_particles
+    HEIGHT = 2000
+    WIDTH = 2000
 
-    particles = Particles(NUM_PARTICLES, NUM_TYPE)
+    particles = Particles(NUM_PARTICLES, NUM_TYPE, HEIGHT, WIDTH)
 
     # Initialize Pygame
     pygame.init()
 
     # Set up the game window
-    screen = pygame.display.set_mode((600, 600))
+    screen = pygame.display.set_mode((2000, 2000))
     pygame.display.set_caption("Particle Life Simulator")
 
     # Game loop
@@ -37,7 +40,7 @@ def main():
     clock = pygame.time.Clock()
     
     while running:
-        clock.tick(10)  # 60 FPS
+        clock.tick(60)  # 60 FPS
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
