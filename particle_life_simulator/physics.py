@@ -5,7 +5,7 @@ def dist(p1, p2):
     # np.linalg.norm()
     return distance
 
-def calculate_force(p1, p2, attraction = 1.0, max_distance = 100):
+def calculate_force(p1, p2, attraction = 1.0, max_distance = 150):
 
     dt = p1 - p2
     distance = dist(p1, p2)

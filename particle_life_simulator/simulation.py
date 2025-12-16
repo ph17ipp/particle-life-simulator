@@ -1,4 +1,4 @@
-from particles import Particles
+import particles
 import pygame
 
 def main():
@@ -23,16 +23,16 @@ def main():
     # Config
     NUM_TYPE = num_types
     NUM_PARTICLES = num_particles
-    HEIGHT = 2000
-    WIDTH = 2000
+    HEIGHT = 600
+    WIDTH = 600
 
-    particles = Particles(NUM_PARTICLES, NUM_TYPE, HEIGHT, WIDTH)
+    particle_object = particles.Particles(NUM_PARTICLES, NUM_TYPE, HEIGHT, WIDTH)
 
     # Initialize Pygame
     pygame.init()
 
     # Set up the game window
-    screen = pygame.display.set_mode((2000, 2000))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Particle Life Simulator")
 
     # Game loop
@@ -40,7 +40,7 @@ def main():
     clock = pygame.time.Clock()
     
     while running:
-        clock.tick(60)  # 60 FPS
+        clock.tick(120)  # 60 FPS
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -50,20 +50,20 @@ def main():
         screen.fill((0, 0, 0))
         
         # Update particles
-        particles.update_position()
+        particle_object.update_position(dt = 5)
         
         # Draw particles
         for i in range(NUM_PARTICLES):
             color = pygame.Color(0)
-            if particles.n_type[i] == 0:
+            if particle_object.n_type[i] == 0:
                 color = pygame.Color(255, 0, 0)  # Red
-            elif particles.n_type[i] == 1:
+            elif particle_object.n_type[i] == 1:
                 color = pygame.Color(0, 255, 0)  # Green
-            elif particles.n_type[i] == 2:
+            elif particle_object.n_type[i] == 2:
                 color = pygame.Color(0, 0, 255)  # Blue
-            elif particles.n_type[i] == 3:
+            elif particle_object.n_type[i] == 3:
                 color = pygame.Color(255, 255, 0)  # Yellow
-            pygame.draw.circle(screen, color, particles.position[i].astype(int), 3)
+            pygame.draw.circle(screen, color, particle_object.position[i].astype(int), 3)
         
         # Update display
         pygame.display.flip()
