@@ -40,44 +40,68 @@ def calculate_all_forces(position, n_type, n_particles):
 
             attraction = 0.0
 
-            # Red and Red
+            # Red/Red
             if n_type[p1] == 0 and n_type[p2] == 0:
                 attraction = -0.5
            
-            # Red and Green
+            # Red/Green
             elif n_type[p1] == 0 and n_type[p2] == 1:
                 attraction = 2.0
             
-            # Red and Blue
+            # Red/Blue
             elif n_type[p1] == 0 and n_type[p2] == 2:
                 attraction = -1.5
         
-            # Red and Yellow
+            # Red/Yellow
             elif n_type[p1] == 0 and n_type[p2] == 3:
                 attraction = 0.5
 
-            # Green and Green
-            if n_type[p1] == 1 and n_type[p2] == 1:
+            # Green/Red
+            if n_type[p1] == 1 and n_type[p2] == 0:
                 attraction = 1.0
 
-            # Green and Blue
+            # Green/Green
+            elif n_type[p1] == 1 and n_type[p2] == 1:
+                attraction = 2.5
+
+            # Green/Blue
             elif n_type[p1] == 1 and n_type[p2] == 2:
                 attraction = 2.5
 
-            # Green and Yellow
+            # Green/Yellow
             elif n_type[p1] == 1 and n_type[p2] == 3:
                 attraction = -1.0
             
-            # Blue and Blue
-            if n_type[p1] == 2 and n_type[p2] == 2:
+            # Blue/Red
+            if n_type[p1] == 2 and n_type[p2] == 0:
                 attraction = -0.3
 
-            # Blue and Yellow
+            # Blue/Green
+            elif n_type[p1] == 2 and n_type[p2] == 1:
+                attraction = -0.3
+
+            # Blue/Blue
+            elif n_type[p1] == 2 and n_type[p2] == 2:
+                attraction = -0.3
+
+            # Blue/Yellow
             elif n_type[p1] == 2 and n_type[p2] == 3:
                 attraction = 1.5
             
-            # Yellow and Yellow
-            if n_type[p1] == 3 and n_type[p2] == 3:
+            # Yellow/Red
+            if n_type[p1] == 3 and n_type[p2] == 0:
+                attraction = -1.0
+            
+            # Yellow/Green
+            elif n_type[p1] == 3 and n_type[p2] == 1:
+                attraction = -1.0
+
+            # Yellow/Blue
+            elif n_type[p1] == 3 and n_type[p2] == 2:
+                attraction = -1.0
+
+            # Yellow/Yellow
+            elif n_type[p1] == 3 and n_type[p2] == 3:
                 attraction = -1.0
        
 
