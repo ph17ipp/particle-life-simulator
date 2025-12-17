@@ -1,5 +1,8 @@
 import particles
 import pygame
+import pygame_widgets
+from pygame_widgets.slider import Slider
+from pygame_widgets.textbox import TextBox
 
 def main():
     while True:
@@ -23,10 +26,10 @@ def main():
     # Config
     NUM_TYPE = num_types
     NUM_PARTICLES = num_particles
-    HEIGHT = 600
-    WIDTH = 600
+    WIDTH = 1280
+    HEIGHT = 720
 
-    particle_object = particles.Particles(NUM_PARTICLES, NUM_TYPE, HEIGHT, WIDTH)
+    particle_object = particles.Particles(NUM_PARTICLES, NUM_TYPE, WIDTH, HEIGHT)
 
     # Initialize Pygame
     pygame.init()
@@ -40,7 +43,7 @@ def main():
     clock = pygame.time.Clock()
     
     while running:
-        clock.tick(120)  # 60 FPS
+        clock.tick(60)  # 60 FPS
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
