@@ -27,7 +27,7 @@ def calculate_force(p1, p2, attraction = 0.0, max_distance = 300):
     return force
 
 @jit(nopython=True)
-def calculate_all_forces(position, n_type, n_particles):
+def calculate_all_forces(position, n_type, n_particles, inter_matrix):
     forces = np.zeros((n_particles, 2))
 
     for p1 in range(n_particles):
@@ -37,73 +37,8 @@ def calculate_all_forces(position, n_type, n_particles):
 
             pos1 = position[p1]
             pos2 = position[p2]
-
-            attraction = 0.0
-
-            # Red/Red
-            if n_type[p1] == 0 and n_type[p2] == 0:
-                attraction = -0.5
-           
-            # Red/Green
-            elif n_type[p1] == 0 and n_type[p2] == 1:
-                attraction = 2.0
-            
-            # Red/Blue
-            elif n_type[p1] == 0 and n_type[p2] == 2:
-                attraction = -1.5
-        
-            # Red/Yellow
-            elif n_type[p1] == 0 and n_type[p2] == 3:
-                attraction = 0.5
-
-            # Green/Red
-            if n_type[p1] == 1 and n_type[p2] == 0:
-                attraction = 1.0
-
-            # Green/Green
-            elif n_type[p1] == 1 and n_type[p2] == 1:
-                attraction = 2.5
-
-            # Green/Blue
-            elif n_type[p1] == 1 and n_type[p2] == 2:
-                attraction = 2.5
-
-            # Green/Yellow
-            elif n_type[p1] == 1 and n_type[p2] == 3:
-                attraction = -1.0
-            
-            # Blue/Red
-            if n_type[p1] == 2 and n_type[p2] == 0:
-                attraction = -0.3
-
-            # Blue/Green
-            elif n_type[p1] == 2 and n_type[p2] == 1:
-                attraction = -0.3
-
-            # Blue/Blue
-            elif n_type[p1] == 2 and n_type[p2] == 2:
-                attraction = -0.3
-
-            # Blue/Yellow
-            elif n_type[p1] == 2 and n_type[p2] == 3:
-                attraction = 1.5
-            
-            # Yellow/Red
-            if n_type[p1] == 3 and n_type[p2] == 0:
-                attraction = -1.0
-            
-            # Yellow/Green
-            elif n_type[p1] == 3 and n_type[p2] == 1:
-                attraction = -1.0
-
-            # Yellow/Blue
-            elif n_type[p1] == 3 and n_type[p2] == 2:
-                attraction = -1.0
-
-            # Yellow/Yellow
-            elif n_type[p1] == 3 and n_type[p2] == 3:
-                attraction = -1.0
-       
+                   
+            attraction = inter_matrix[n_type[p1],n_type[p2]]
 
             force = calculate_force(pos1, pos2, attraction)
             forces[p1] += force

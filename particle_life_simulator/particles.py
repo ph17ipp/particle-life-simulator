@@ -1,5 +1,6 @@
 import numpy as np
 import physics
+from interactionmatrix import inter_matrix
 
 class Particles:
     def __init__(self, n_particles: int, n_type: int, width, height):
@@ -9,6 +10,7 @@ class Particles:
         self.height = height
         self.position = np.random.rand(n_particles, 2) * [width, height] 
         self.speed = np.zeros((n_particles, 2))
+        self.inter_matrix = inter_matrix()
     '''  
     def update_position(self):
         self.position = np.random.normal(self.position, 5)
@@ -18,7 +20,7 @@ class Particles:
     '''
 
     def update_position(self, dt= 0.1):
-        forces = physics.calculate_all_forces(self.position, self.n_type, self.n_particles)
+        forces = physics.calculate_all_forces(self.position, self.n_type, self.n_particles, self.inter_matrix)
         
         # Geschwindigkeit und Position aktualisieren
         self.speed += forces * dt
