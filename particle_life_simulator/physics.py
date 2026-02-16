@@ -1,46 +1,36 @@
 import numpy as np
-from numba import jit
+from numba import jit, prange
 
-@jit(nopython=True)
-def dist(p1, p2):
-    distance = np.sqrt(np.sum((p1 - p2)**2))
-    # np.linalg.norm()
-    return distance
-
-@jit(nopython=True)
-def calculate_force(p1, p2, attraction = 0.0, max_distance = 300):
-    dt = p2 - p1
-    distance = dist(p1, p2)
-
-    if distance < 2:
-        distance = 2
-    
-    if distance > max_distance:
-        #if attraction == 0.0:
-            #return (np.random.random(2) - 0.5) * 0.005
-        #else:
-            return np.array([0.0, 0.0])
-
-    force_magnitude = attraction / (distance**2)
-    force = (dt / distance) * force_magnitude
-
-    return force
-
-@jit(nopython=True)
-def calculate_all_forces(position, n_type, n_particles, inter_matrix):
+@jit(nopython=True, fastmath=True, cache=True, parallel=True)
+def calculate_all_forces(position, n_type, n_particles, inter_matrix, max_distance = 150):
     forces = np.zeros((n_particles, 2))
 
-    for p1 in range(n_particles):
-        for p2 in range(n_particles):
-            if p1 == p2:
+    for p1 in prange(n_particles):
+        for p2 in range(p1 + 1, n_particles):
+            dx = position[p2, 0] - position[p1, 0]
+            dy = position[p2, 1] - position[p1, 1]
+            
+            if abs(dx) > max_distance or abs(dy) > max_distance:
                 continue
-
-            pos1 = position[p1]
-            pos2 = position[p2]
-                   
-            attraction = inter_matrix[n_type[p1],n_type[p2]]
-
-            force = calculate_force(pos1, pos2, attraction)
-            forces[p1] += force
+            
+            distance_sq = dx * dx + dy * dy
+            
+            if distance_sq < 4 or distance_sq > max_distance * max_distance:
+                continue
+            
+            distance = np.sqrt(distance_sq)
+            
+            attraction1 = inter_matrix[n_type[p1], n_type[p2]]
+            force_magnitude1 = attraction1 / distance_sq
+            
+            forces[p1, 0] += dx / distance * force_magnitude1
+            forces[p1, 1] += dy / distance * force_magnitude1
+            
+            # Gegenkraft
+            attraction2 = inter_matrix[n_type[p2], n_type[p1]]
+            force_magnitude2 = attraction2 / distance_sq
+            
+            forces[p2, 0] -= dx / distance * force_magnitude2
+            forces[p2, 1] -= dy / distance * force_magnitude2
     
     return forces
