@@ -1,6 +1,7 @@
 import numpy as np
 from numba import jit, prange
 
+
 @jit(nopython=True, fastmath=True, cache=True, parallel=True)
 def calculate_all_forces(position, n_type, n_particles, inter_matrix, max_distance = 150):
     forces = np.zeros((n_particles, 2))

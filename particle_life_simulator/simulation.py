@@ -1,8 +1,10 @@
-import particles
 import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
+
+from . import particles
+
 
 def main():
     while True:
@@ -21,7 +23,7 @@ def main():
         except ValueError:
             print("Invalid input. Please enter an integer.")
             continue
-        if not num_types in range(1, 5):
+        if num_types not in range(1, 5):
             print("Between 1-4 particle types are only allowed.")
             continue
         break

@@ -1,6 +1,8 @@
 import numpy as np
-import physics
-from interactionmatrix import inter_matrix
+
+from . import physics
+from .interactionmatrix import inter_matrix
+
 
 class Particles:
     def __init__(self, n_particles: int, n_type: int, width, height):
