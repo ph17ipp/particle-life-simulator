@@ -39,7 +39,8 @@ dev = [
     "pytest",
     "pytest-cov",
     "ruff",
-    "numpy"
+    "numpy",
+    "numba"
 ]
 publishing = [
     "build",
