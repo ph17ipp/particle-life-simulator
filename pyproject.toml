@@ -9,7 +9,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 authors = [
-    { name = "Philipp Tran", email = "philipp.tran@study.hs-duesseldorf.de" }
+    { name = "Philipp Tran", email = "philipp.tran@study.hs-duesseldorf.de" },
+    { name = "Marc Le", email = "marc.le@study.hs-duesseldorf.de" },
+    { name = "Alena Cicek", email = "alena.cicek@study.hs-duesseldorf.de" },
+    { name = "Axin Yildiz", email = "axin.yildiz@study.hs-duesseldorf.de" }
 ]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -23,8 +26,13 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = []
-description = "Python-basierte Simulation biologisch inspirierter Partikelinteraktionen"
+dependencies = [
+    "numpy",
+    "numba",
+    "pygame",
+    "pygame-widgets",
+]
+description = "Python-based simulation of interacting particles with real-time visualization"
 license = {file = "LICENSE"}
 name = "particle_life_simulator"
 readme = {file = "README.md", content-type = "text/markdown"}
@@ -38,9 +46,7 @@ dev = [
     "isort",
     "pytest",
     "pytest-cov",
-    "ruff",
-    "numpy",
-    "numba"
+    "ruff"
 ]
 publishing = [
     "build",
@@ -77,4 +83,4 @@ line-ending = "lf"
 extend-select = ["E", "I"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["particle-life-simulator"]
+known-first-party = ["particle_life_simulator"]
