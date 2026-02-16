@@ -2,7 +2,6 @@ import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
-import numpy as np
 
 from . import particles
 
@@ -35,6 +34,9 @@ def main():
     WIDTH = 1280
     HEIGHT = 720
 
+    # Creating particle objects
+    particle_object = particles.Particles(NUM_PARTICLES, NUM_TYPE, WIDTH, HEIGHT)
+
     # Initialize Pygame
     pygame.init()
 
@@ -61,12 +63,6 @@ def main():
             combinations.append((i, j))
 
     num_sliders = len(combinations)
-    
-    #interaction_matrix
-    MATRIX = interaction_matrix = np.zeros((NUM_TYPE, NUM_TYPE), dtype=float)
-
-    # Creating particle objects
-    particle_object = particles.Particles(NUM_PARTICLES, NUM_TYPE, WIDTH, HEIGHT, MATRIX)
 
     # Slider Layout
     left_margin = 40
@@ -157,10 +153,9 @@ def main():
         for (i, j), slider in zip(combinations, sliders):
             value = slider.getValue()
 
-            interaction_matrix[i, j] = value
-            interaction_matrix[j, i] = value
+            particle_object.inter_matrix[i, j] = value
+            particle_object.inter_matrix[j, i] = value
         
-        particle_object.set_interaction_matrix(interaction_matrix)
         particle_object.update_position(dt = 2)
         
         # Draw particles
