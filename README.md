@@ -2,25 +2,37 @@
 
 A Python-based simulation of interacting particles inspired by biological systems and emergent behavior.
 
-This project aims to implement a performant and visually appealing particle system where multiple particle types follow attraction and repulsion rules, resulting in complex dynamic structures.
+Multiple particle types follow attraction and repulsion rules. You can tune the interaction matrix live via sliders and observe emergent structures in real time.
 
-## 🔧 Features (planned)
+## 🔧 Features
 
-- Customizable number of particles
-- Multiple particle types with interaction matrix
-- Real-time or recorded visualization
-- Adjustable parameters (e.g., friction, force range, randomness)
+- Interactive Pygame visualization
+- 1-4 particle types with a symmetric interaction matrix
+- Live sliders for attraction/repulsion strength
+- Random motion fallback when no forces apply
 
 ## 📦 Installation
 
-To install particle_life_simulator from GitHub repository, do:
+Clone and install the package, then install runtime dependencies:
 
 ```console
 git clone https://github.com/ph17ipp/particle-life-simulator.git
 cd particle-life-simulator
 python -m pip install .
+python -m pip install numpy numba pygame pygame-widgets
 # or on mac: python3 -m pip install .
+#            python3 -m pip install numpy numba pygame pygame-widgets
 ```
+
+## ▶️ Usage
+
+Start the interactive simulation:
+
+```console
+python -m particle_life_simulator.simulation
+```
+
+You will be prompted for the number of particles and particle types (1-4). Use the sliders to set attraction/repulsion values for each type pair.
 
 ## 👥 Team
 
@@ -32,24 +44,25 @@ python -m pip install .
 | Axin Yildiz | @Todozuka |
 
 
-## 📄 Documentation
-
-Documentation will be added as the project progresses.
-
 ## 🛠 Developer Documentation
-### 🔧 Code Architecture (planned)
+### 🔧 Code Architecture
 ```console
 particle_life_simulator/
- └── particle_life_simulator/
-      ├── placeholder.py
-      └── placeholder.py
+ ├── particles.py   # Particle state and integration step
+ ├── physics.py     # Force calculation (Numba-accelerated)
+ └── simulation.py  # Pygame UI and slider controls
 ```
 
 ### 🧪 Testing
-Test are located in:
+Tests are located in:
 ```console
 tests/
- └── test_simulation.py
+ └── test_particle_life_simulator.py
+```
+
+Run tests with:
+```console
+pytest
 ```
 
 ### 🧹 Code Quality
