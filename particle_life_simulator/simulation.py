@@ -44,7 +44,7 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Particle Life Simulator")
     
-    # Colours
+    # Colors
     colors = [
             (255, 0, 0),    # Red - Type 0
             (0, 255, 0),    # Green - Type 1
@@ -66,7 +66,7 @@ def main():
 
     # Slider Layout
     left_margin = 40
-    right_limit = int(WIDTH * 0.35)
+    right_limit = int(WIDTH * 0.15)
     usable_width = int(right_limit - left_margin)
 
     top_margin = 40
@@ -84,46 +84,82 @@ def main():
     # Creating Slider and Labels 
     for index, (a, b) in enumerate(combinations):
         y = int(top_margin + index * block_height)
+        w = int(usable_width / 3)
 
         # Label for Slider
         label = TextBox(
             win = screen,
             x = int(left_margin),
             y = y,
-            width = int(usable_width),
-            height = 30,
-            fontSize = 18,
-            borderColour=(255, 0, 0),
-            textColour=(255, 0, 0),
+            width = w,
+            height = 20,
+            fontSize = 14,
+            borderColour=(0, 0, 0),
+            borderThickness= 1,
+            textColour=(0, 0, 0),
+            colour=colors[a]
+        )
+        label.disable()
+        label.setText(active_colors[a])
+        labels.append(label)
+
+        label = TextBox(
+            win = screen,
+            x = int(left_margin + w),
+            y = y,
+            width = w,
+            height = 20,
+            fontSize = 14,
+            borderColour=(0, 0, 0),
+            borderThickness= 1,
+            textColour=(255, 255, 255),
             colour=(0, 0, 0)
         )
         label.disable()
-        label.setText(f"{active_colors[a]} + {active_colors[b]}")
+        label.setText("      + ")
+        labels.append(label)
+
+        label = TextBox(
+            win = screen,
+            x = int(left_margin + 2*w),
+            y = y,
+            width = w,
+            height = 20,
+            fontSize = 14,
+            borderColour=(0, 0, 0),
+            borderThickness= 1,
+            textColour=(0, 0, 0),
+            colour=colors[b]
+        )
+        label.disable()
+        label.setText(active_colors[b])
         labels.append(label)
 
         # Slider
         slider = Slider(
             win = screen,
             x = int(left_margin),
-            y = int(y + 30 + 5),
+            y = int(y + 22 + 6),
             width = int(usable_width),
-            height = 30,
+            height = 18,
             min = -1.0,
             max = 1.0,
-            step = 0.01
+            step = 0.01,
+            handleColour=(40, 40, 40)
         )
         sliders.append(slider)
 
         # Value-Box
         value_box = TextBox(
             win = screen,
-            x = int(left_margin + usable_width + 10),
-            y = int(y + 30 + 5),
-            width = 60,
-            height = 30,
-            fontSize = 18,
-            borderColour = (255, 0, 0),
-            textColour = (255, 0, 0),
+            x = int(left_margin + usable_width + 15),
+            y = int(y + 24 + 6),
+            width = 40,
+            height = 20,
+            fontSize = 14,
+            borderColour = (255, 255, 255),
+            borderThickness= 1,
+            textColour = (255, 255, 255),
             colour = (0, 0, 0)
         )
         value_box.disable()
