@@ -1,3 +1,9 @@
+"""simulation.py: Main simulation and user interface module.
+This module initializes the particle system, sets up the simulation window,
+creates the slider-based UI for configuring the interaction matrix 
+and runs the main simulation loop.
+"""
+
 import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
@@ -7,6 +13,8 @@ from . import particles
 
 
 def main():
+
+    # Asks the user for the total number of particles and particle types (limited to the available colors).
     while True:
         user_input = input("Enter number of particles: ")
         try:
@@ -28,23 +36,25 @@ def main():
             continue
         break
     
-    # Config
+    # Config: Simulation configuration values
     NUM_TYPE = num_types
     NUM_PARTICLES = num_particles
-    WIDTH = 1280
-    HEIGHT = 720
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
 
-    # Creating particle objects
-    particle_object = particles.Particles(NUM_PARTICLES, NUM_TYPE, WIDTH, HEIGHT)
+    particle_object = particles.Particles(NUM_PARTICLES, NUM_TYPE, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    # Initialize Pygame
+
+# ==========================================================================
+# Particle Life Simulator with Pygame
+# ==========================================================================
+    
+    # Initialize Pygame and set up game window
     pygame.init()
-
-    # Set up the game window
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Particle Life Simulator")
     
-    # Colors
+    # Color definitions for particles
     colors = [
             (255, 0, 0),    # Red - Type 0
             (0, 255, 0),    # Green - Type 1
@@ -52,7 +62,16 @@ def main():
             (255, 255, 0)   # Yellow - Type 3
     ]
 
-    # colourdistribution for Labels
+
+# ==========================================================================
+# Slider UI setup (interaction matrix control)
+# ==========================================================================
+# This section creates and manages all UI elements based on sliders
+# to control the interaction matrix between particle types.
+# Each slider shows one unique type pair (i, j) and allows real-time
+# adjustments of attraction and repulsion strength.
+
+    # Color distribution for Labels
     type_colors = ["Red", "Green", "Blue", "Yellow"]
     active_colors = type_colors[:NUM_TYPE]
 
@@ -64,29 +83,38 @@ def main():
 
     num_sliders = len(combinations)
 
-    # Slider Layout
-    left_margin = 40
-    right_limit = int(WIDTH * 0.15)
-    usable_width = int(right_limit - left_margin)
 
+    # --- Slider Layout ---
+    # Margins: distance between window edges and UI elements
+    left_margin = 40
     top_margin = 40
     bottom_margin = 40
-    usable_height = HEIGHT - top_margin - bottom_margin
+
+    # Slider uses the left 15% of the window width
+    right_limit = int(SCREEN_WIDTH * 0.15)
+    usable_width = int(right_limit - left_margin)
+    usable_height = SCREEN_HEIGHT - top_margin - bottom_margin
 
     # Max height for Slider-Block
     max_block_height = 70 
     block_height = min(max_block_height, usable_height / num_sliders)
 
-    sliders = []
-    labels = []
-    value_boxes = []
+
+# --- UI elements ---
+    sliders = []        # interactive Slider widgets
+    labels = []         # TextBox labels
+    value_boxes = []    # Textboxes showing slider values
 
     # Creating Slider and Labels 
     for index, (a, b) in enumerate(combinations):
         y = int(top_margin + index * block_height)
+
+        # Split label area into three equally sized parts:
+        # [type a label] [ "+" label] [type b label]
         w = int(usable_width / 3)
 
-        # Label for Slider
+        # --- Labels for Slider (type a, "+", type b) ---
+        # Label for type a
         label = TextBox(
             win = screen,
             x = int(left_margin),
@@ -103,6 +131,7 @@ def main():
         label.setText(active_colors[a])
         labels.append(label)
 
+        # Label for "+"
         label = TextBox(
             win = screen,
             x = int(left_margin + w),
@@ -119,6 +148,8 @@ def main():
         label.setText("      + ")
         labels.append(label)
 
+
+        # Label for type b
         label = TextBox(
             win = screen,
             x = int(left_margin + 2*w),
@@ -135,7 +166,10 @@ def main():
         label.setText(active_colors[b])
         labels.append(label)
 
-        # Slider
+
+        # --- Slider ---
+        # Each slider controls interaction strength between types.
+        # Range: [-1.0, 1.0], step: 0.01
         slider = Slider(
             win = screen,
             x = int(left_margin),
@@ -149,7 +183,8 @@ def main():
         )
         sliders.append(slider)
 
-        # Value-Box
+        # --- Value-Box ---
+        # Display for the current slider value
         value_box = TextBox(
             win = screen,
             x = int(left_margin + usable_width + 15),
@@ -166,7 +201,12 @@ def main():
         value_box.setText(f"{slider.getValue():.2f}")
         value_boxes.append(value_box)
 
-    # Game loop
+
+# ==========================================================================
+# Main simulation loop
+# ==========================================================================
+# Handle events, update UI and particles and draw particles
+
     running = True
     clock = pygame.time.Clock()
     
@@ -177,15 +217,14 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Clear screen
         screen.fill((0, 0, 0))
         
-       # Update Slider-values
+       # UI update: update value boxes to match with the slider
         for slider, value_box in zip(sliders, value_boxes):
             value_box.setText(f"{slider.getValue():.2f}")
             
                 
-        # Update particles
+        # Update particles: apply slider values to interaction matrix
         for (i, j), slider in zip(combinations, sliders):
             value = slider.getValue()
 
@@ -194,18 +233,16 @@ def main():
         
         particle_object.update_position(dt = 2)
         
+        
         # Draw particles
         positions = particle_object.position.astype(int)
-
         for i in range(NUM_PARTICLES):
             color = colors[particle_object.n_type[i]]
             pygame.draw.circle(screen, color, positions[i], 2)
         
-        # Update display
         pygame_widgets.update(events)
         pygame.display.update()
         
-    # Quit Pygame
     pygame.quit()
 
 
